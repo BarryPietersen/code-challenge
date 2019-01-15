@@ -5,6 +5,9 @@
 
 # ignore
 HackerRank.sln
+App.config
+Properties/
+HackerRank.csproj
 Program.cs
 TextInput.txt
 TextOutput.txt
