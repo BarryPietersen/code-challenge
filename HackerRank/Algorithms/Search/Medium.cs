@@ -100,7 +100,7 @@ namespace HackerRank.Algorithms.Search
 
             foreach (var kvp in tracks)
             {
-                //there is only one track on the row
+                // there is only one track on the row
                 if (kvp.Value.Count == 1) cells -= kvp.Value[0][1] - kvp.Value[0][0] + 1;
 
                 // there are multiple tracks on the row

@@ -60,17 +60,17 @@ namespace HackerRank.DataStructures.Stacks
         // https://www.hackerrank.com/challenges/equal-stacks/problem
         static int equalStacks(int[] h1, int[] h2, int[] h3)
         {
-            //tops of stack
+            // tops of stack
             int i = 0;
             int j = 0;
             int k = 0;
 
-            //sum arrays, o(n)
+            // sum arrays, o(n)
             int s1 = h1.Sum();
             int s2 = h2.Sum();
             int s3 = h3.Sum();
 
-            //continue to 'Pop()' from largest stack, o(n)
+            // continue to 'Pop()' from largest stack, o(n)
             while (i < h1.Length && j < h2.Length && k < h3.Length)
             {
                 if (s1 > s2 && s1 >= s3) { s1 -= h1[i++]; }

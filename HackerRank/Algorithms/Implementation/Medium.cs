@@ -291,35 +291,5 @@ namespace HackerRank.Algorithms.Implementation
 
             return "NO";
         }
-
-        ////https://www.hackerrank.com/challenges/almost-sorted/problem
-        //static string almostSorted(int[] arr)
-        //{
-        //    if (arr.Length < 3) return arr[0] < arr[1] ? "yes" : $"yes{Environment.NewLine}swap 1 2";
-        //    //1 6 5 4 2 7
-
-        //    //1 5 3 4 2 6
-        //    //
-        //    for (int i = 1; i < arr.Length - 1; i++)
-        //    {
-        //        if (arr[i] > arr[i + 1])
-        //        {
-        //            int count = 0;
-
-        //            for (int j = i + 1; j < arr.Length; j++)
-        //            {
-        //                if (arr[j] < arr[i - 1] || count > 1) break;
-
-        //                else if (arr[j] < arr[i])
-        //                {
-        //                    count++;
-        //                }
-        //            }
-        //        }
-
-        //        // if we make it here, check for the
-        //        // sorting 'sub array' possiblility
-        //    }
-        //}
     }
 }

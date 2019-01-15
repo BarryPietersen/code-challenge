@@ -134,7 +134,7 @@ namespace HackerRank.Algorithms.Implementation
 
             for (int i = m; i < s.Count; i++)
             {
-                //add the value of (current i - first i occurring in last segment)
+                // add the value of (current i - first i occurring in last segment)
                 daySum += (s[i] - s[i - m]);
                 if (daySum == d) count++;
             }
@@ -279,8 +279,8 @@ namespace HackerRank.Algorithms.Implementation
                 if (values.ContainsKey(k + 1))
                     max = Math.Max(max, values[k] + values[k + 1]);
 
-                //for an odd case when there is no integer partner,
-                //rather a single integer that is repeated the most
+                // for an odd case when there is no integer partner,
+                // rather a single integer that is repeated the most
                 else max = Math.Max(max, values[k]);
             }
 
@@ -299,9 +299,9 @@ namespace HackerRank.Algorithms.Implementation
         {
             int maxheight = 0;
 
-            //find the greatest character value in word.
-            //yeild an index by subtracting the ascii
-            //value of 'a' from the current ch
+            // find the greatest character value in word.
+            // yeild an index by subtracting the ascii
+            // value of 'a' from the current ch
             foreach (char ch in word)
             {
                 if (h[ch - 97] > maxheight) maxheight = h[ch - 97];
@@ -495,16 +495,16 @@ namespace HackerRank.Algorithms.Implementation
         // https://www.hackerrank.com/challenges/repeated-string/problem
         public static long repeatedString(string s, long n)
         {
-            //count the number of 'a' occurances in s
+            // count the number of 'a' occurances in s
             long a = s.Where(c => c == 'a').LongCount();
 
-            //multiply a by the number of times s occures in n 
+            // multiply a by the number of times s occures in n 
             a *= n / s.Length;
 
-            //mod n by the length of s, yeild the remainder
+            // mod n by the length of s, yeild the remainder
             n %= s.Length;
 
-            //search the remaining substring
+            // search the remaining substring
             return a + s.Substring(0, (int)n).Where(c => c == 'a').Count();
         }
 
@@ -527,7 +527,7 @@ namespace HackerRank.Algorithms.Implementation
                 jumps++;
             }
 
-            //check if the last iteration would have been c[n - 2]
+            // check if the last iteration would have been c[n - 2]
             return i == len ? ++jumps : jumps;
         }
 
@@ -755,11 +755,11 @@ namespace HackerRank.Algorithms.Implementation
         static int workbook(int n, int k, int[] arr)
         {
             int pagecount = 1;
-            int special = 0; //tally up the special problems
-            int exerciseL; //keep track of the exercise min bound for the current page
-            int exerciseR; //keep track of the exercise max bound for the current page
+            int special = 0; // tally up the special problems
+            int exerciseL; // keep track of the exercise min bound for the current page
+            int exerciseR; // keep track of the exercise max bound for the current page
             int lastex; // store the exercise count of the last page in the chapter
-            int pages; //number of pages in current chapter
+            int pages; // number of pages in current chapter
 
             for (int i = 0; i < n; i++)
             {
