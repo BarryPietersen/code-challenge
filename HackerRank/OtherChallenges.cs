@@ -79,43 +79,7 @@ namespace HackerRank
         // a merge sort implementation
         //int[] unsorted = { 5, 3, 6, 4, 4, 2, 8, 3, 5, 10, 18 };
         //================================================================================
-        public static int[] MergeSort(int[] unsorted)
-        {
-            if (unsorted.Length < 2) { return unsorted; }
-
-            int mid = unsorted.Length / 2;
-            int[] left = new int[mid];
-            int[] right = new int[mid + (unsorted.Length % 2 == 1 ? 1 : 0)];
-
-            Array.Copy(unsorted, left, left.Length);
-            Array.Copy(unsorted, mid, right, 0, right.Length);
-
-            return Merge(MergeSort(left), MergeSort(right));
-        }
-
-        public static int[] Merge(int[] left, int[] right)
-        {
-            int l = 0, r = 0;
-            int[] sorted = new int[left.Length + right.Length];
-
-            while (l < left.Length && r < right.Length)
-            {
-                if (left[l] < right[r]) { sorted[l + r] = left[l++]; }
-                else if (left[l] > right[r]) { sorted[l + r] = right[r++]; }
-                else
-                {
-                    sorted[l + r] = left[l++];
-                    sorted[l + r] = right[r++];
-                }
-            }
-
-            if (l < left.Length) { Array.Copy(left, l, sorted, l + r, left.Length - l); }
-            else if (r < right.Length) { Array.Copy(right, r, sorted, l + r, right.Length - r); }
-
-            return sorted;
-        }
-
-        public static int[] MergeSort2(int[] arr)
+        public static int[] MergeSort(int[] arr)
         {
             if (arr.Length < 2) return arr;
 
@@ -127,7 +91,7 @@ namespace HackerRank
             Array.Copy(arr, 0, left, 0, mid);
             Array.Copy(arr, mid, rght, 0, mid + arr.Length % 2);
 
-            return merge(MergeSort2(left), MergeSort2(rght));
+            return merge(MergeSort(left), MergeSort(rght));
         }
 
         private static int[] merge(int[] left, int[] rght)
