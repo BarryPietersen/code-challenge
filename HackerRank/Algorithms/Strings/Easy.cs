@@ -470,5 +470,33 @@ namespace HackerRank.Algorithms.Strings
 
             return sb.ToString();
         }
+
+        // https://www.hackerrank.com/challenges/beautiful-binary-string/problem
+        static int beautifulBinaryString(string b)
+        {
+            int i = 0;
+            int count = 0;
+
+            while (i < b.Length - 5)
+            {
+                if (b[i] == '0' &&
+                    b[i + 1] == '1' &&
+                    b[i + 2] == '0')
+                {
+                    i += (b[i + 3] == '1' &&
+                          b[i + 4] == '0') ? 3 : 2;
+                    count++;
+                }
+
+                i++;
+            }
+
+            if (b.Substring(i).Contains("010"))
+            {
+                count++;
+            }
+
+            return count;
+        }
     }
 }
