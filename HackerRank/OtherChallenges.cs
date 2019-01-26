@@ -560,5 +560,58 @@ namespace HackerRank
 
             return true;
         }
+
+        /*
+            1
+            2 3
+            4 5 6
+            7 8 9 10
+            11 12 13 14 15
+
+            floyds triangle
+        */
+        public static string FloydsTriangle(int height)
+        {
+            if (height < 1) return "";
+
+            int n = 1;
+            int level = 1;
+            StringBuilder sb = new StringBuilder();
+
+            while (level <= height)
+            {
+                for (int i = 1; i < level; i++)
+                {
+                    sb.Append($"{n++} ");
+                }
+
+                level++;
+                sb.Append($"{n++}\n");
+            }
+
+            return sb.ToString();
+        }
+
+        // codewars https://www.codewars.com/kata/dubstep/train/csharp
+        public static string SongDecoder(string input)
+        {
+            return string.Join(" ", new Regex("WUB").Replace(input, " ").Split(' ').Where(s => !string.IsNullOrEmpty(s)));
+        }
+
+        // codewars https://www.codewars.com/kata/54e6533c92449cc251001667/train/csharp
+        public static IEnumerable<T> UniqueInOrder<T>(IEnumerable<T> iterable)
+        {
+            List<T> result = new List<T>();
+
+            if (iterable.Count() == 0) return result;
+
+            result.Add(iterable.First());
+
+            foreach (var item in iterable)
+                if (!result.Last().Equals(item))
+                    result.Add(item);
+
+            return result;
+        }
     }
 }

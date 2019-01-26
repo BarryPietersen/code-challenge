@@ -963,5 +963,17 @@ namespace HackerRank.Algorithms.Implementation
 
             return "Yes";
         }
+
+        // https://www.hackerrank.com/challenges/permutation-equation/problem
+        public static int[] permutationEquation(int[] p)
+        {
+            Dictionary<int, int> indexes = new Dictionary<int, int>(p.Length);
+
+            for (int i = 0; i < p.Length; i++) indexes.Add(p[p[i] - 1], i + 1);
+
+            for (int i = 1; i <= p.Length; i++) p[i - 1] = indexes[i];
+
+            return p;
+        }
     }      
 }
