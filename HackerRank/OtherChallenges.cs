@@ -638,30 +638,33 @@ namespace HackerRank
             int[,] matrix_5x5 = new int[5, 5] { { 1, 2, 3, 4, 5 }, { 6, 7, 8, 9, 10 }, { 11, 12, 13, 14, 15 }, { 16, 17, 18, 19, 20 }, { 21, 22, 23, 24, 25 } };
             int[,] matrix_6x6 = new int[6, 6] { { 1, 2, 3, 4, 5, 6 }, { 7, 8, 9, 10, 11, 12 }, { 13, 14, 15, 16, 17, 18 }, { 19, 20, 21, 22, 23, 24 }, { 25, 26, 27, 28, 29, 30 }, { 31, 32, 33, 34, 35, 36 } };
         */
+
         public static int[,] RotateMatrix(int[,] matrix)
         {
-            int t = 0;
-            int r = matrix.GetLength(0) - 1;
-            int b = matrix.GetLength(0) - 1;
-            int l = 0;
+            if (matrix.GetLength(0) != matrix.GetLength(1))
+                throw new Exception("the dimensions of the matrix are not equal.");
 
+            // tl - top and left index
+            // br - bottom and right index
+            int tl = 0;
+            int br = matrix.GetLength(0) - 1;
             int m = matrix.GetLength(0) / 2;
             int temp1, temp2;
 
             while (m > 0)
             {
-                for (int i = 0; i < b - t; i++)
+                for (int i = 0; i < br - tl; i++)
                 {
-                    temp1 = matrix[t + i, r];
-                    matrix[t + i, r] = matrix[t, l + i];
-                    temp2 = matrix[b, r - i];
-                    matrix[b, r - i] = temp1;
-                    temp1 = matrix[b - i, l];
-                    matrix[b - i, l] = temp2;
-                    matrix[t, l + i] = temp1;
+                    temp1 = matrix[tl + i, br];
+                    matrix[tl + i, br] = matrix[tl, tl + i];
+                    temp2 = matrix[br, br - i];
+                    matrix[br, br - i] = temp1;
+                    temp1 = matrix[br - i, tl];
+                    matrix[br - i, tl] = temp2;
+                    matrix[tl, tl + i] = temp1;
                 }
 
-                t++; r--; b--; l++; m--;
+                tl++; br--; m--;
             }
 
             return matrix;
