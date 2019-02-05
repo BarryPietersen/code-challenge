@@ -9,7 +9,7 @@ namespace HackerRank.Algorithms.Implementation
     public static class Hard
     {
         /*
-            runtime: o(m + n)
+            runtime: o(m * n)
               space: o(log n)
         */
         // https://www.hackerrank.com/challenges/matrix-rotation-algo/problem
