@@ -37,13 +37,13 @@ namespace HackerRank.Algorithms.Implementation
             // constraint: min(m,n) % 2 == 0,
             // this guarantees the inner most 
             // layer always has two dimensions
-            // count - the number of layers in the matrix
-            int count = Math.Min(matrix.Count(), matrix[0].Count) / 2;
+            // layercount - the number of layers in the matrix
+            int layercount = Math.Min(matrix.Count(), matrix[0].Count) / 2;
 
-            int _r, idx;
+            int _r, idx, i;
             int[] layer;
 
-            while (count > 0)
+            while (layercount > 0)
             {
                 // mod the number of rotations
                 // by length of the layer
@@ -56,37 +56,38 @@ namespace HackerRank.Algorithms.Implementation
                     idx = 0;
                     layer = new int[(v + h) * 2 - 4];
 
-                    for (int i = 0; i < v; i++)
+                    for (i = 1; i < v; i++)
                         layer[idx++] = matrix[t + i][l];
 
-                    for (int i = 1; i < h; i++)
+                    for (i = 1; i < h; i++)
                         layer[idx++] = matrix[b][l + i];
 
-                    for (int i = 1; i < v; i++)
+                    for (i = 1; i < v; i++)
                         layer[idx++] = matrix[b - i][r];
 
-                    for (int i = 1; i < h - 1; i++)
+                    for (i = 1; i < h; i++)
                         layer[idx++] = matrix[t][r - i];
 
                     layer = rotateArray(layer, _r);
                     idx = 0;
 
-                    for (int i = 0; i < v; i++)
+                    for (i = 1; i < v; i++)
                         matrix[t + i][l] = layer[idx++];
 
-                    for (int i = 1; i < h; i++)
+                    for (i = 1; i < h; i++)
                         matrix[b][l + i] = layer[idx++];
 
-                    for (int i = 1; i < v; i++)
+                    for (i = 1; i < v; i++)
                         matrix[b - i][r] = layer[idx++];
 
-                    for (int i = 1; i < h - 1; i++)
+                    for (i = 1; i < h; i++)
                         matrix[t][r - i] = layer[idx++];
                 }
 
                 v -= 2; h -= 2;
-                t++; l++; b--; r--; count--;
+                t++; l++; b--; r--; layercount--;
             }
+
             return matrix;
         }
 
