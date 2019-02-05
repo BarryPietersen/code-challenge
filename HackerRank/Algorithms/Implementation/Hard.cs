@@ -68,8 +68,8 @@ namespace HackerRank.Algorithms.Implementation
                     for (i = 1; i < h; i++)
                         layer[idx++] = matrix[t][r - i];
 
-                    layer = rotateArray(layer, _r);
                     idx = 0;
+                    layer = rotateArray(layer, _r);
 
                     for (i = 1; i < v; i++)
                         matrix[t + i][l] = layer[idx++];
