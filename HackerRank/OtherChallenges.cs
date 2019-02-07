@@ -638,7 +638,6 @@ namespace HackerRank
             int[,] matrix_5x5 = new int[5, 5] { { 1, 2, 3, 4, 5 }, { 6, 7, 8, 9, 10 }, { 11, 12, 13, 14, 15 }, { 16, 17, 18, 19, 20 }, { 21, 22, 23, 24, 25 } };
             int[,] matrix_6x6 = new int[6, 6] { { 1, 2, 3, 4, 5, 6 }, { 7, 8, 9, 10, 11, 12 }, { 13, 14, 15, 16, 17, 18 }, { 19, 20, 21, 22, 23, 24 }, { 25, 26, 27, 28, 29, 30 }, { 31, 32, 33, 34, 35, 36 } };
         */
-
         public static int[,] RotateMatrix(int[,] matrix)
         {
             if (matrix.GetLength(0) != matrix.GetLength(1))
@@ -668,6 +667,18 @@ namespace HackerRank
             }
 
             return matrix;
+        }
+
+        // https://www.hackerrank.com/challenges/sherlock-and-moving-tiles/problem
+        static double[] movingTiles(int l, int s1, int s2, double[] queries)
+        {
+            // velocity - dist traveled apart in 1 sec
+            int v = Math.Abs(s1 - s2);
+
+            for (int i = 0; i < queries.Length; i++)
+                queries[i] = Math.Sqrt(Math.Pow((l - Math.Sqrt(queries[i])), 2) * 2) / v;
+
+            return queries;
         }
     }
 }
