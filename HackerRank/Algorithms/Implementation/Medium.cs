@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 
 namespace HackerRank.Algorithms.Implementation
 {
@@ -12,7 +13,7 @@ namespace HackerRank.Algorithms.Implementation
     {
         // https://www.hackerrank.com/challenges/climbing-the-leaderboard/problem
         //=================================================================================
-        private static int[] getRanks(int[] scores, int[] alice)
+        public static int[] getRanks(int[] scores, int[] alice)
         {
             scores = scores.Distinct().ToArray();
 
@@ -22,7 +23,7 @@ namespace HackerRank.Algorithms.Implementation
             return alice;
         }
 
-        static int binarySearch(int[] scores, int score, int start, int end)
+        public static int binarySearch(int[] scores, int score, int start, int end)
         {
             int mid = (end - start) / 2;
 
@@ -44,7 +45,7 @@ namespace HackerRank.Algorithms.Implementation
         //=================================================================================
 
         // https://www.hackerrank.com/challenges/extra-long-factorials/problem
-        static BigInteger extraLongFactorials(int n)
+        public static BigInteger extraLongFactorials(int n)
         {
             int len = n - 1;
             BigInteger fac = new BigInteger(n);
@@ -58,7 +59,7 @@ namespace HackerRank.Algorithms.Implementation
 
         // https://www.hackerrank.com/challenges/queens-attack-2/problem
         //=================================================================================
-        static int queensAttack(int n, int k, int r_q, int c_q, int[][] obstacles)
+        public static int queensAttack(int n, int k, int r_q, int c_q, int[][] obstacles)
         {
             int count = 0;
             HashSet<Tuple<int, int>> obst = new HashSet<Tuple<int, int>>();
@@ -78,7 +79,7 @@ namespace HackerRank.Algorithms.Implementation
             return count;
         }
 
-        static int ValidateQueen(int n, int r_q, int c_q, HashSet<Tuple<int, int>> obst, int row, int col)
+        private static int ValidateQueen(int n, int r_q, int c_q, HashSet<Tuple<int, int>> obst, int row, int col)
         {
             int count = 0;
             r_q += row;
@@ -96,7 +97,7 @@ namespace HackerRank.Algorithms.Implementation
         //=================================================================================
 
         // https://www.hackerrank.com/challenges/the-time-in-words/problem
-        static string timeInWords(int h, int m)
+        public static string timeInWords(int h, int m)
         {  
             Dictionary<int, string> words = new Dictionary<int, string>();
             words.Add(0, "o' clock");
@@ -163,7 +164,7 @@ namespace HackerRank.Algorithms.Implementation
         // surface area of 1 column = (h * 6) - ((h - 1) * 2)
         // hidden surface area (two cols meet) = (h of smaller) * 2
         // https://www.hackerrank.com/challenges/3d-surface-area/problem
-        static int surfaceArea(int[][] A)
+        public static int surfaceArea(int[][] A)
         {
             int totalSurface = 0;
             int x = A[0].Length - 1;
@@ -230,7 +231,7 @@ namespace HackerRank.Algorithms.Implementation
 
         // **if the outer loop condition fails it means we have iterated the entire string and that the
         //   string is already the largest lexicographical permutation it can possibly be - 'no answer'
-        static string biggerIsGreater(string w)
+        public static string biggerIsGreater(string w)
         {
             char[] arr = w.ToCharArray();
 
@@ -265,7 +266,7 @@ namespace HackerRank.Algorithms.Implementation
         }
 
         //https://www.hackerrank.com/challenges/the-grid-search/problem
-        static string gridSearch(string[] G, string[] P)
+        public static string gridSearch(string[] G, string[] P)
         {
             int h = G.Length - P.Length;
             int w = G[0].Length - P[0].Length;
@@ -290,6 +291,33 @@ namespace HackerRank.Algorithms.Implementation
             }
 
             return "NO";
+        }
+
+
+        //  time o(n)
+        // space o(n)
+        // https://www.hackerrank.com/challenges/encryption/problem
+        public static string encryption(string s)
+        {
+            int si = 0;
+            StringBuilder sb = new StringBuilder();
+            int rows = (int)Math.Floor(Math.Sqrt(s.Length)) + 1;
+            int cols = (int)Math.Ceiling(Math.Sqrt(s.Length));
+
+            for (int c = 0; c < cols; c++)
+            {
+                si = c;
+
+                for (int r = 0; r < rows && si < s.Length; r++)
+                {
+                    sb.Append(s[si]);
+                    si += cols;
+                }
+
+                sb.Append(' ');
+            }
+
+            return sb.ToString();
         }
     }
 }
