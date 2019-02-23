@@ -116,5 +116,13 @@ namespace HackerRank
                 yield return arrStack[i];
             }
         }
+
+        public IEnumerable<T> Stack2Values()
+        {
+            for (int i = arrStack.Length - 1; i >= s2; i--)
+            {
+                yield return arrStack[i];
+            }
+        }
     }
 }
