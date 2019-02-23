@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace HackerRank
@@ -111,14 +112,6 @@ namespace HackerRank
         public IEnumerable<T> Stack1Values()
         {
             for (int i = 0; i < Stack1Count; i++)
-            {
-                yield return arrStack[i];
-            }
-        }
-
-        public IEnumerable<T> Stack2Values()
-        {
-            for (int i = arrStack.Length - 1; i >= s2; i--)
             {
                 yield return arrStack[i];
             }

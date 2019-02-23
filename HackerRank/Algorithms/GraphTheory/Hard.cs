@@ -31,7 +31,7 @@ namespace HackerRank.Algorithms.GraphTheory
 
             // populate the adjacency list,
             // avoid storing duplicate edges
-            // between verticies
+            // between vertices's
             foreach (var edge in edges)
             {
                 if (adjlist.ContainsKey(edge[0]))
