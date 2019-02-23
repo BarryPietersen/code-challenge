@@ -75,5 +75,34 @@ namespace HackerRank.Algorithms.Greedy
 
             return l >= r ? "YES" : "NO";
         }
+
+        // https://www.hackerrank.com/challenges/grid-challenge/problem
+        static string gridChallenge(string[] grid)
+        {
+            if (grid == null) throw new ArgumentNullException(nameof(grid));
+            if (grid.Length < 2) return "YES";
+
+            // sort the first row
+            grid[0] = string.Join("", grid[0].OrderBy(ch => ch));
+
+            // c  - column idx
+            // c1 - column idx + 1
+            // r  - row idx
+            for (int c = 0, c1 = 1; c1 < grid.Length; c++, c1++)
+            {
+                // sort the next row and then compare column values
+                grid[c1] = string.Join("", grid[c1].OrderBy(ch => ch));
+
+                for (int r = 0; r < grid[c].Length; r++)
+                {
+                    if (grid[c][r] > grid[c1][r])
+                    {
+                        return "NO";
+                    }
+                }
+            }
+
+            return "YES";
+        }
     }
 }
