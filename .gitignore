@@ -12,6 +12,7 @@ Program.cs
 TextInput.txt
 TextOutput.txt
 BinaryTree.cs
+packages.config
 
 # User-specific files
 *.suo
