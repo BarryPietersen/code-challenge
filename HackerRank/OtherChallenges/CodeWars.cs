@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HackerRank
 {
-    public static class OtherChallenges
+    public static class CodeWars
     {
         /*
             calculate the overlapping area of two rectangles on a 2d plane
