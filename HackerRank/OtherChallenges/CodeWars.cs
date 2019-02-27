@@ -741,7 +741,7 @@ namespace HackerRank
                 each string only contains characters '1' or '0'
                 indicating if it is connected to the current i
         */
-        static int countGroups(string[] forest)
+        public static int countGroups(string[] forest)
         {
             int groups = 0;
             HashSet<int> visited = new HashSet<int>();
