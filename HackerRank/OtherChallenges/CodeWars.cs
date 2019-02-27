@@ -670,7 +670,7 @@ namespace HackerRank
         }
 
         // https://www.hackerrank.com/challenges/sherlock-and-moving-tiles/problem
-        static double[] movingTiles(int l, int s1, int s2, double[] queries)
+        public static double[] movingTiles(int l, int s1, int s2, double[] queries)
         {
             // velocity - dist traveled apart in 1 sec
             int v = Math.Abs(s1 - s2);
@@ -679,6 +679,51 @@ namespace HackerRank
                 queries[i] = Math.Sqrt(Math.Pow((l - Math.Sqrt(queries[i])), 2) * 2) / v;
 
             return queries;
+        }
+
+        // count pairs of numbers in an array that sum to k
+        // pairs are considered only if:
+        // - they are a distinct combination of numbers (to the already considered pairs)
+        // - a value cannot be added with itself, only if it occures twice it can
+        /*
+            nums = [2 4 8 6 10 0 5 5 2 5 -3, 13]
+            k    = 10
+
+            output: 5
+
+            explanation: 2, 8
+                         4, 6
+                         10, 0
+                         5, 5
+                         -3, 13
+
+            note: we did not consider the second occurance of 2, 8 or 5, 5
+        */
+        public static int summingPairs(int[] numbers, long k)
+        {
+            int count = 0;
+            long complement;
+            HashSet<string> pairs = new HashSet<string>();
+            HashSet<long> complements = new HashSet<long>();
+
+            foreach (var num in numbers)
+            {
+                complement = k - num;
+
+                if (complements.Contains(complement))
+                {
+                    if (!pairs.Contains($"{num} {complement}") ||
+                        !pairs.Contains($"{complement} {num}"))
+                    {
+                        pairs.Add($"{num} {complement}");
+                        count++;
+                    }
+                }
+                else
+                    complements.Add(num);
+            }
+
+            return count;
         }
     }
 }
