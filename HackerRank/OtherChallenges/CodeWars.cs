@@ -725,5 +725,79 @@ namespace HackerRank
 
             return count;
         }
+
+        /*
+            count groups within a disconnected graph
+
+            approach:
+                traverse an undirected disconnected graph using dfs
+                counting the number of graphs within the 'forest'
+
+            time:  o(v + e)
+            space: o(v + e) 
+
+            input:
+                assume the string array represents a matrix,
+                each string only contains characters '1' or '0'
+                indicating if it is connected to the current i
+        */
+        static int countGroups(string[] forest)
+        {
+            int groups = 0;
+            HashSet<int> visited = new HashSet<int>();
+            Dictionary<int, HashSet<int>> adjlist = new Dictionary<int, HashSet<int>>();
+
+            // populate our adjacency list o(v + e)
+            for (int i = 0; i < forest.Length; i++)
+            {
+                if (!adjlist.ContainsKey(i))
+                {
+                    adjlist.Add(i, new HashSet<int>());
+                }
+
+                for (int j = 1; j < forest.Length; j++)
+                {
+                    if (forest[i][j] == '1')
+                    {
+                        adjlist[i].Add(j);
+
+                        if (!adjlist.ContainsKey(j))
+                        {
+                            adjlist.Add(j, new HashSet<int>());
+                            adjlist[j].Add(i);
+                        }
+                        else if (!adjlist[j].Contains(i))
+                        {
+                            adjlist[j].Add(i);
+                        }
+                    }
+                }
+            }
+
+            // iterate over adjacency list calling recursive dfs methed
+            foreach (var kvp in adjlist)
+            {
+                if (!visited.Contains(kvp.Key))
+                {
+                    // increment groups counter each time
+                    // we encounter a node that was not
+                    // part of another group
+                    groups++;
+                    dfs(adjlist, visited, kvp.Key);
+                }
+            }
+
+            return groups;
+        }
+
+        // explore a node using recursive depth first search
+        private static void dfs(Dictionary<int, HashSet<int>> adjlist, HashSet<int> visited, int node)
+        {
+            if (visited.Contains(node)) return;
+
+            visited.Add(node);
+
+            foreach (var adjnode in adjlist[node]) dfs(adjlist, visited, adjnode);
+        }
     }
 }
