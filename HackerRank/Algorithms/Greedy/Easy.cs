@@ -104,5 +104,24 @@ namespace HackerRank.Algorithms.Greedy
 
             return "YES";
         }
+		
+		// https://www.hackerrank.com/challenges/priyanka-and-toys/problem
+		public static int toys(int[] w)
+		{
+			Array.Sort(w);
+			int count = 1;
+			int min = w[0];
+
+			for(int i = 1; i < w.Length; i++)
+			{
+				if(w[i] - min > 4)
+				{
+					count++;
+					min = w[i];
+				}
+			}
+
+			return count;
+		}
     }
 }
