@@ -183,15 +183,12 @@ namespace HackerRank.Algorithms.Search
         {
             int count = data[node - 1];
 
-            if (adjlist.ContainsKey(node))
+            foreach (var adjnode in adjlist[node])
             {
-                foreach (var adjnode in adjlist[node])
+                if (!visited.Contains(adjnode))
                 {
-                    if (!visited.Contains(adjnode))
-                    {
-                        visited.Add(adjnode);
-                        count += dfsSumSubtree(adjlist, visited, data, adjnode, ref min, ref sum);
-                    }
+                    visited.Add(adjnode);
+                    count += dfsSumSubtree(adjlist, visited, data, adjnode, ref min, ref sum);
                 }
             }
 
