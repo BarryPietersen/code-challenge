@@ -181,6 +181,7 @@ namespace HackerRank.Algorithms.Search
 
         private static int dfsSumSubtree(Dictionary<int, HashSet<int>> adjlist, HashSet<int> visited, List<int> data, int node, ref int min, ref int sum)
         {
+            visited.Add(node);
             int count = data[node - 1];
 
             foreach (var adjnode in adjlist[node])
