@@ -125,12 +125,80 @@ namespace HackerRank.Algorithms.Search
                             mergedTracks.Push(track);
                     }
 
-                    foreach (var track in mergedTracks)
-                        cells -= track[1] - track[0] + 1;
+                    foreach (var track in mergedTracks) cells -= track[1] - track[0] + 1;
                 }
             }
 
             return cells;
         }
+
+        /*
+            approach:
+                - sum and store the input data list 'node values'
+                - use an adjacency list to represent an undirected graph
+                - using dfs traversal to compute the sums of all subtrees in o(n)
+                  by returning the sum of child to parent while keeping track of visited nodes
+                  aswell as checking for the minimal difference condition
+
+            space: o(v + e)
+             time: o(n)
+        */
+        // https://www.hackerrank.com/challenges/cut-the-tree/problem
+        //===================================================================================
+        public static int cutTheTree(List<int> data, List<List<int>> edges)
+        {
+            int sum = data.Sum();
+            int min = int.MaxValue;
+
+            HashSet<int> visited = new HashSet<int>();
+            Dictionary<int, HashSet<int>> adjlist = new Dictionary<int, HashSet<int>>();
+
+            // populate the adjacency list for an undirected graph
+            for (int i = 0; i < edges.Count; i++)
+            {
+                if (!adjlist.ContainsKey(edges[i][0]))
+                {
+                    adjlist.Add(edges[i][0], new HashSet<int>());
+                    adjlist[edges[i][0]].Add(edges[i][1]);
+                }
+                else
+                    adjlist[edges[i][0]].Add(edges[i][1]);
+
+                if (!adjlist.ContainsKey(edges[i][1]))
+                {
+                    adjlist.Add(edges[i][1], new HashSet<int>());
+                    adjlist[edges[i][1]].Add(edges[i][0]);
+                }
+                else
+                    adjlist[edges[i][1]].Add(edges[i][0]);
+            }
+
+            // call recursive dfs algorithm, keeping track of the current 'minimal diff subtree'
+            dfsSumSubtree(adjlist, visited, data, 1, ref min, ref sum);
+
+            return min;
+        }
+
+        private static int dfsSumSubtree(Dictionary<int, HashSet<int>> adjlist, HashSet<int> visited, List<int> data, int node, ref int min, ref int sum)
+        {
+            int count = data[node - 1];
+
+            if (adjlist.ContainsKey(node))
+            {
+                foreach (var adjnode in adjlist[node])
+                {
+                    if (!visited.Contains(adjnode))
+                    {
+                        visited.Add(adjnode);
+                        count += dfsSumSubtree(adjlist, visited, data, adjnode, ref min, ref sum);
+                    }
+                }
+            }
+
+            min = Math.Min(Math.Abs(count - (sum - count)), min);
+
+            return count;
+        }
+        //===================================================================================
     }
 }
