@@ -198,5 +198,81 @@ namespace HackerRank.Algorithms.Search
             return count;
         }
         //===================================================================================
+
+        // https://www.hackerrank.com/challenges/count-luck/problem
+        public static string countLuck(string[] matrix, int k)
+        {
+            Point root = FindEntryPoint(matrix, 'M');
+
+            HashSet<string> visited = new HashSet<string>() { root.ToString() };
+
+            return dfsCountLuck(matrix, visited, root, 0) == k ? "Impressed": "Oops!";          
+        }
+
+        private static int dfsCountLuck(string[] matrix, HashSet<string> visited, Point point, int decisions)
+        {
+            if (matrix[point.Y][point.X] == '*') return decisions;
+
+            visited.Add(point.ToString());
+
+            // left right up down
+            Point l = new Point(point.X - 1, point.Y);
+            Point r = new Point(point.X + 1, point.Y);
+            Point u = new Point(point.X, point.Y - 1);
+            Point d = new Point(point.X, point.Y + 1);
+
+            List<Point> children = new List<Point>();
+
+            if (!OutOfBounds(matrix, l) && !visited.Contains(l.ToString())) children.Add(l);
+            if (!OutOfBounds(matrix, r) && !visited.Contains(r.ToString())) children.Add(r);
+            if (!OutOfBounds(matrix, u) && !visited.Contains(u.ToString())) children.Add(u);
+            if (!OutOfBounds(matrix, d) && !visited.Contains(d.ToString())) children.Add(d);
+
+            if (children.Count > 1) decisions++;
+
+            foreach (var child in children)
+            {
+                int temp = dfsCountLuck(matrix, visited, child, decisions);
+                if (temp > 0) return temp; //stop searching, we found the path
+            }
+
+            return 0;
+        }
+
+        private static bool OutOfBounds(string[] matrix, Point point)
+        {
+            return (point.X < 0 || point.X >= matrix[0].Length ||
+                    point.Y < 0 || point.Y >= matrix.Length || matrix[point.Y][point.X] == 'X');
+        }
+
+        private static Point FindEntryPoint(string[] matrix, char token)
+        {
+            for (int y = 0; y < matrix.Length; y++)
+            {
+                for (int x = 0; x < matrix[0].Length; x++)
+                {
+                    if (matrix[y][x] == token)
+                    {
+                        return new Point(x, y);
+                    }
+                }
+            }
+
+            throw new Exception($"the entry point marked '{token}' was not found in {nameof(matrix)}");
+        }
+
+        private class Point
+        {
+            public int X { get; set; }
+            public int Y { get; set; }
+
+            public Point(int x, int y)
+            {
+                X = x;
+                Y = y;
+            }
+
+            public override string ToString() => $"{X} {Y}";
+        }
     }
 }
