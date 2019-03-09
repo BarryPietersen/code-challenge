@@ -123,5 +123,22 @@ namespace HackerRank.Algorithms.Greedy
 
 			return count;
 		}
+
+        // https://www.hackerrank.com/challenges/minimum-absolute-difference-in-an-array/problem
+        public static int minimumAbsoluteDifference(int[] arr)
+        {
+            Array.Sort(arr);
+            int min = int.MaxValue;
+
+            for (int i = 1; i < arr.Length; i++)
+            {
+                if (arr[i] - arr[i - 1] < min)
+                {
+                    min = arr[i] - arr[i - 1];
+                }
+            }
+
+            return min;
+        }
     }
 }
