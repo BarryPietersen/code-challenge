@@ -638,5 +638,131 @@ namespace HackerRank
 
             foreach (var adjnode in adjlist[node]) dfs(adjlist, visited, adjnode);
         }
+
+        /*
+            scenario: a game of boggle
+            challenge: write a program that returns a list of all the found words in a boggle matrix
+
+            input:
+                    a list of valid words
+                    a character matrix
+
+            output:
+                    a list of found words
+
+            char[,] board = { 
+                { 'c', 'h', 'd', 'r' },
+                { 'a', 'i', 'e', 'd' },
+                { 'r', 'n', 'v', 'e' },
+                { 'e', 'l', 'f', 'r' },
+                { 'b', 'e', 'u', 'p' },
+                { 'w', 'l', 'i', 'y' },
+                { 'k', 'e', 'v', 'e' },
+                { 'w', 'i', 'i', 'g' },
+                { 'd', 'd', 'o', 'n' },
+            };
+
+            List<string> validWords = new List<string>
+            {
+                "flew",
+                "believe",
+                "kind",
+                "care",
+                "random",
+                "kid",
+                "achieve",
+                "kidding"
+            };
+        */
+        public static List<string> SolveBoggle(char[,] board, List<string> validWords)
+        {
+            Node root = BuildTrie(validWords);
+            List<string> found = new List<string>();
+            HashSet<string> visited = new HashSet<string>();
+
+            for (int r = 0; r < board.Length; r++)
+            {
+                for (int c = 0; c < board.GetLength(0); c++)
+                {
+                    dfsExplore(r, c, board, root, found, "", visited);
+                }
+            }
+
+            return found;
+        }
+
+        private static void dfsExplore(int r, int c, char[,] board, Node node, List<string> found, string word, HashSet<string> visited)
+        {
+            if (OOB(r, c, board) || !node.Children.ContainsKey(board[r, c]) || visited.Contains($"{r},{c}")) return;
+
+            word += board[r, c];
+            visited.Add($"{r},{c}");
+            node = node.Children[board[r, c]];
+
+            if (node.IsWord) found.Add(word);
+
+            dfsExplore(r + 1, c, board, node, found, word, visited);
+            dfsExplore(r - 1, c, board, node, found, word, visited);
+            dfsExplore(r, c + 1, board, node, found, word, visited);
+            dfsExplore(r, c - 1, board, node, found, word, visited);
+            dfsExplore(r + 1, c + 1, board, node, found, word, visited);
+            dfsExplore(r - 1, c - 1, board, node, found, word, visited);
+            dfsExplore(r + 1, c - 1, board, node, found, word, visited);
+            dfsExplore(r - 1, c + 1, board, node, found, word, visited);
+
+            visited.Remove($"{r},{c}");
+        }
+
+        // https://en.wikipedia.org/wiki/Trie
+        private static Node BuildTrie(List<string> validWords)
+        {
+            // ensure we have a lexicographical order
+            validWords = validWords
+                .OrderBy(w => w)
+                .ToList();
+
+            Node root = new Node('*');
+            Node current = root;
+
+            foreach (var word in validWords)
+            {
+                foreach (var ch in word)
+                {
+                    if (!current.Children.ContainsKey(ch))
+                    {
+                        current.Children.Add(ch, new Node(ch));
+                    }
+
+                    current = current.Children[ch];
+                }
+
+                current.IsWord = true;
+                current = root;
+            }
+
+            return root;
+        }
+
+        class Node
+        {
+            public char Value { get; set; }
+            public bool IsWord { get; set; }
+            public Dictionary<char, Node> Children { get; set; }
+
+            public Node(char value)
+            {
+                Value = value;
+                Children = new Dictionary<char, Node>();
+            }
+        }
+
+        private static bool OOB(int r, int c, char[,] board)
+        {
+            int x = board.GetLength(1) - 1;
+            int y = board.GetLength(0) - 1;
+
+            return !(0 <= r && r <= y &&
+                     0 <= c && c <= x);
+        }
     }
 }
