@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace HackerRank
 {
@@ -58,23 +56,89 @@ namespace HackerRank
 
             return mid;
         }
-         
-        // problem set on solo learn app
-        public static int[] NBonacciNumbers(int m, int n)
-        {
-            int[] bonacci = new int[m];
-            bonacci[n - 1] = 1;
-            bonacci[n] = 1;
-            int sum = 1;
 
-            for (int i = n + 1; i < m; i++)
+        /*
+            calculate up to the mth term for an n bonacci sequence
+
+            input: m n
+            output: nbonnaci sequence upto m
+
+            3 4
+            1
+            -> [ 0 1 ] 1 2 4 8 15 29 36
+                       ^
+            5 4
+            4
+            -> [ 0 1 1 2 ] 4 8 15 29 36
+                           ^
+
+            8 4
+            29
+            -> 0 1 1 [ 2 4 8 15 ] 29 36
+                                   ^
+        */
+        public static int[] NBonacciSequence(int m, int n)
+        {
+            if (m < 2) return new[] { 0 };
+
+            int[] bonacci = new int[m];
+            bonacci[1] = 1;
+            int head = 0;
+
+            int i = 2;
+            for (; i <= n && i < m; i++)
             {
-                sum -= bonacci[i - n - 1];
-                sum += bonacci[i - 1];
-                bonacci[i] = sum;
+                head += bonacci[i - 1];
+                bonacci[i] = head;
+            }
+            for (; i < m; i++)
+            {
+                head += bonacci[i - 1];
+                bonacci[i] = head;
+                head -= bonacci[i - n];
             }
 
             return bonacci;
+        }
+
+
+        public static int NBonacciNumber(int m, int n)
+        {
+            if (m < 2) return 0;
+
+            int head = 1;
+            int prev = 0;
+            int tail = 0;
+            int temp;
+
+            /*
+                8 4
+                29
+                -> 0 1 1 [ 2 4 8 15 ] 29 36
+                                       ^
+            */
+
+            int i = 3;
+            for (; i <= n && i < m; i++)
+            {
+                temp = head;
+                head += prev;
+                prev = temp;
+            }
+            // 0 1 1 2 4 8 15 29 56 108
+            //         t          T
+            // h = 2
+            // p = 1
+            // t = 0
+            for (; i <= m; i++)
+            {
+                temp = head;
+                head += head - tail;
+                tail += prev * 2 - temp;
+                prev = temp;
+            }
+
+            return head;
         }
 
         // a merge sort implementation
@@ -716,11 +780,6 @@ namespace HackerRank
         // https://en.wikipedia.org/wiki/Trie
         private static Node BuildTrie(List<string> validWords)
         {
-            // ensure we have a lexicographical order
-            validWords = validWords
-                .OrderBy(w => w)
-                .ToList();
-
             Node root = new Node('*');
             Node current = root;
 
@@ -763,6 +822,88 @@ namespace HackerRank
 
             return !(0 <= r && r <= y &&
                      0 <= c && c <= x);
+        }
+
+        /*
+             scenario: a sorting problem
+            challenge: given an array A and an integer K,
+                       sort A into 3 segments of A[i] < k, == k and > k
+                       in o(n) space and better than o(n log n) time
+
+             input: an array A
+                    an integer K
+
+            output: sort A into segements based on K
+
+            note:
+             - the order within each segment does not matter.
+             - there will be at least 1 and at most 3 segments.
+             - this could be solved by simply sorting A, achieving o(n log n)
+
+            Examples
+                     input: K = 3
+                            A = 4, 5, 7, 3, 2
+                    output:     2, 3, 4, 7, 5
+
+                     input: K = 4
+                            A = 8, 2, 1, 6, 9, 7, 200, -4,  5
+                    output:    -4, 2, 1, 8, 6, 9,   7, 200, 5        
+        */
+        public static void SegmentSort(List<int> list, int k)
+        {
+            int lti; // less than index
+            int eqi; // equal to index
+            int gti; // greater than index
+
+            // counts
+            int lt = 0;
+            int eq = 0;
+            int gt = 0; // not needed
+
+            int temp;
+            int curIdx = 0;
+
+            list.ForEach(x =>
+            {
+                if (x < k) lt++;
+                else if (x == k) eq++;
+                else gt++;
+            });
+
+            lti = 0;
+            eqi = lt;
+            gti = lt + eq;
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[curIdx] < k)
+                {
+                    // swap
+                    temp = list[lti];
+                    list[lti] = list[curIdx];
+                    list[curIdx] = temp;
+                    lti++;
+                }
+                else if (list[curIdx] == k)
+                {
+                    temp = list[eqi];
+                    list[eqi] = list[curIdx];
+                    list[curIdx] = temp;
+                    eqi++;
+                }
+                else
+                {
+                    temp = list[gti];
+                    list[gti] = list[curIdx];
+                    list[curIdx] = temp;
+                    gti++;
+                }
+
+                // set next curIdx, to compare and position
+                if (lti < lt) curIdx = lti;
+                else if (eqi < lt + eq) curIdx = eqi;
+                else curIdx = gti;
+            }
         }
     }
 }
