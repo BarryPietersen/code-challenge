@@ -814,5 +814,121 @@ namespace Other.Algorithms
                 else curIdx = gti;
             }
         }
+
+        /*
+            Coderbyte:
+            Have the method read str which will be an arithmetic expression composed of only integers and the operators: +,-,* and / 
+            the input expression will be in postfix notation (Reverse Polish notation), example: (1 + 2) * 3 would be 1 2 + 3 * in postfix notation. 
+            The method should determine the answer for the given postfix expression. 
+            For example: if str is "2 12 + 7 /" then the method should return 2.
+        */
+        public static string ReversePolishNotation(string str)
+        {
+            /*
+                Input: "1 1 + 1 + 1 +"
+                Output: 4
+            
+                Input: "4 5 + 2 1 + *"
+                Output: 27
+             
+                Input: "2 3 - 4 + 5 6 7 * + *"   ==   (2 - 3 + 4) * (5 + 6 * 7)
+                Output: 141
+            */
+
+            var inputs = str.Split(' ');
+            var operands = new Stack<int>();
+
+            foreach (var input in inputs)
+            {
+                if (int.TryParse(input, out var operand))
+                {
+                    operands.Push(operand);
+                }
+                else
+                {
+                    var right = operands.Pop();
+                    var left = operands.Pop();
+                    var next = ComputeValue(left, right, input.First());
+
+                    operands.Push(next);
+                }
+            }
+
+            return operands.Pop().ToString();
+        }
+
+        private static int ComputeValue(int left, int right, char @operator)
+        {
+            return @operator switch
+            {
+                '+' => left + right,
+                '-' => left - right,
+                '*' => left * right,
+                '/' => left / right,
+                _ => throw new ArgumentException($"unsupported arithmetic operator {@operator}"),
+            };
+        }
+
+        /*
+              4     8
+             /       \
+            2         10
+           / \
+          1   7
+              /
+             5
+              \
+               9
+        */
+        // Coderbyte: determine if the input strArr is a single valid binary tree.
+        // input format: an array of strings "(i1,i2)" where i1 is a child node and i2 is its parent. values are integer
+        // sampele input: [ "(4,5)", "(3,5)", "(1,3)", "(5,10)" ] 
+        // runtime: o(n)
+        // space: o(nlogn)
+        public static string TreeConstructor(string[] strArr)
+        {
+            // parse input
+            var edges = strArr.Select(s =>
+                s.Split(",")
+                 .Select(s => int.Parse(s.Trim('(', ')')))
+                 .ToList())
+                 .ToList();
+
+            var allChildNodes = new HashSet<int>();
+            var potentialRootNodes = new HashSet<int>();
+            var nodeChildrenCount = new Dictionary<int, int>();
+
+            foreach (var edge in edges)
+            {
+                var child = edge.First();
+                var parent = edge.Last();
+
+                allChildNodes.Add(child);
+                potentialRootNodes.Remove(child);
+
+                if (!nodeChildrenCount.TryGetValue(parent, out var childrenCount))
+                {
+                    nodeChildrenCount.Add(parent, 1);
+
+                    if (!allChildNodes.Contains(parent))
+                    {
+                        potentialRootNodes.Add(parent);
+                    }
+                }
+                else if (childrenCount == 1)
+                {
+                    nodeChildrenCount[parent]++;
+                }
+                else
+                {
+                    // node has more than 2 children
+                    return "false";
+                }
+            }
+
+            // if there is more than 1 root node present at this point,
+            // then strArr contains multiple trees and is not proper
+            return potentialRootNodes.Count == 1 ? "true" : "false";
+        }
     }
 }
