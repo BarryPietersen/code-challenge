@@ -15,6 +15,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{338432A1-64F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9304F212-49D0-4B51-8B1C-CF44739F0255}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeeksForGeeks.Tests", "tests\GeeksForGeeks.Tests\GeeksForGeeks.Tests.csproj", "{53CFA5A5-86C6-4257-93B9-6A8C318F82F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A787C69C-D846-498D-90D3-A86515002EAB}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +45,10 @@ Global
 		{1FC7976B-BE3C-4CD8-A816-A9C54E69F8D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1FC7976B-BE3C-4CD8-A816-A9C54E69F8D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1FC7976B-BE3C-4CD8-A816-A9C54E69F8D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53CFA5A5-86C6-4257-93B9-6A8C318F82F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53CFA5A5-86C6-4257-93B9-6A8C318F82F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53CFA5A5-86C6-4257-93B9-6A8C318F82F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53CFA5A5-86C6-4257-93B9-6A8C318F82F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +58,7 @@ Global
 		{1C557F0E-7E02-4E29-B307-FD3C7363C297} = {338432A1-64FF-4C48-8E93-39CBA1AF6005}
 		{6022ED35-F3AF-46D3-BF70-A111C5D45034} = {338432A1-64FF-4C48-8E93-39CBA1AF6005}
 		{1FC7976B-BE3C-4CD8-A816-A9C54E69F8D1} = {9304F212-49D0-4B51-8B1C-CF44739F0255}
+		{53CFA5A5-86C6-4257-93B9-6A8C318F82F1} = {9304F212-49D0-4B51-8B1C-CF44739F0255}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66313E1C-AE96-46F2-AF7F-04445A884319}

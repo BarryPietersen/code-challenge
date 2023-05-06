@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace HackerRank.OtherChallenges
+namespace GeeksForGeeks.OtherChallenges
 {
     public static class Algorithms
     {
@@ -66,9 +66,13 @@ namespace HackerRank.OtherChallenges
             // total units of food required
             var days = (m * s) / n;
 
-            if (((m * s) % n) != 0) days++;
+            if (((m * s) % n) != 0) 
+            { 
+                days++;
+            }
 
             Console.WriteLine("Yes " + days);
+
             return true;
         }
 
@@ -83,8 +87,12 @@ namespace HackerRank.OtherChallenges
                 l += arr[i - 1];
                 r -= arr[i];
 
-                if (l == r) return i;
+                if (l == r) 
+                { 
+                    return i;
+                }
             }
+
             return -1;
         }
 
@@ -147,6 +155,7 @@ namespace HackerRank.OtherChallenges
                 i++; 
                 j++;
             }
+
             return min;
         }
 
@@ -173,20 +182,48 @@ namespace HackerRank.OtherChallenges
                         tempmax += array[++i];
                     }
 
-                    if (i < len) isbitonic = true;
+                    if (i < len) 
+                    {
+                        isbitonic = true;
+                    }
 
                     while (i < len && array[i] > array[i + 1])
                     {
                         tempmax += array[++i];
                     }
 
-                    if (isbitonic && tempmax > max) max = tempmax;
+                    if (isbitonic && tempmax > max) 
+                    {
+                        max = tempmax;
+                    }
 
                     i--;
                 }
             }
 
             return max;
+        }
+
+        // https://practice.geeksforgeeks.org/problems/majority-element-1587115620/1
+        public static int majorityElement(int[] a, int size)
+        {
+            int half = size / 2;
+            var counter = new Dictionary<int, int>();
+
+            foreach (var num in a)
+            {
+                if (!counter.TryGetValue(num, out var val))
+                {
+                    counter.Add(num, val);
+                }
+
+                if (++counter[num] > half)
+                {
+                    return num;
+                }          
+            }
+
+            return -1;
         }
     }
 }
