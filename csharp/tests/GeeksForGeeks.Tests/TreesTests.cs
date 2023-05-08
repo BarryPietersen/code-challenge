@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace GeeksForGeeks.Tests
@@ -13,9 +14,30 @@ namespace GeeksForGeeks.Tests
             var node = BuildTree(input);
             var actual = Trees.topView(node);
 
+            AssertEqual(expected.ToList(), actual);
+        }
 
-            Assert.Equal(expected.Length, actual.Count);
-            for (int i = 0; i < actual.Count; i++)
+        [Theory]
+        [InlineData("1 3 2", new int[] { 3, 1, 2 })]
+        [InlineData("14 14 3 N 8 8 12 N 6 17 3 N 1 11 10 N 6 6 13 N 10 17 7 N 11 7", new int[] { 7, 6, 7, 13, 11, 10 })]
+        public void bottomView_RetunsExpected(string input, int[] expected)
+        {
+            var node = BuildTree(input);
+            var actual = Trees.bottomView(node);
+
+            AssertEqual(expected.ToList(), actual);
+        }
+
+        private static void AssertEqual<T>(List<T> expected, List<T> actual) 
+        {
+            if (expected == actual)
+            {
+                return;
+            }
+
+            Assert.Equal(expected.Count, actual.Count);
+
+            for (int i = 0; i < expected.Count; i++)
             {
                 Assert.Equal(expected[i], actual[i]);
             }

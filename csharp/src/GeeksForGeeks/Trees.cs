@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GeeksForGeeks
 {
@@ -85,7 +86,7 @@ namespace GeeksForGeeks
             var maxRight = 0;
             var head = new List<int>();
             var tail = new List<int> { root.data };
-            var q = new Queue<QItem>(new[] { new QItem { Node = root, X = 0 } });
+            var q = new Queue<QItem>(new[] { new QItem(root, 0) });
 
             while (q.TryDequeue(out var item))
             {
@@ -94,8 +95,8 @@ namespace GeeksForGeeks
                     continue; 
                 }
 
-                q.Enqueue(new QItem { Node = item.Node.left, X = item.X - 1 });
-                q.Enqueue(new QItem { Node = item.Node.right, X = item.X + 1 });
+                q.Enqueue(new QItem(item.Node.left, item.X - 1));
+                q.Enqueue(new QItem(item.Node.right, item.X + 1));
 
                 if (item.X < maxLeft)
                 {
@@ -115,11 +116,49 @@ namespace GeeksForGeeks
             return head;
         }
 
-        private class QItem 
+        // https://practice.geeksforgeeks.org/problems/bottom-view-of-binary-tree/1
+        public static List<int> bottomView(Node root)
         {
-            public Node? Node { get; set; }
-            public int X { get; set; }
+            var visited = new HashSet<int>();
+            var result = new SortedDictionary<int, Node>();
+            var s = new Stack<QItem>(new[] { new QItem(root, 0) });
+            var q = new Queue<QItem>(new[] { new QItem(root, 0) });
+
+            while (q.TryDequeue(out var item))
+            {
+                if (item.Node is null)
+                {
+                    continue;
+                }
+
+                var leftItem = new QItem(item.Node.left, item.X - 1);
+                var rightItem = new QItem(item.Node.right, item.X + 1);
+
+                // the order is important
+                q.Enqueue(leftItem);
+                q.Enqueue(rightItem);
+                s.Push(leftItem);
+                s.Push(rightItem);
+            }
+
+            while (s.TryPop(out var item)) 
+            {
+                if (item.Node is null || visited.Contains(item.X))
+                {
+                    continue;
+                }
+
+                visited.Add(item.X);
+                result.Add(item.X, item.Node);
+            }
+
+            return result
+                .Values
+                .Select(n => n.data)
+                .ToList();
         }
+
+        private record QItem(Node Node, int X);
     }
 
     public class Node
