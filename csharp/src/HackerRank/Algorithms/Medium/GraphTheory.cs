@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace HackerRank.Algorithms.Medium
 {
@@ -249,6 +250,119 @@ namespace HackerRank.Algorithms.Medium
             }
 
             return distances[100] < int.MaxValue ? distances[100] : -1;
+        }
+
+        // https://www.hackerrank.com/challenges/even-tree/problem
+        // Note: The tree in the input will be such that it can always be
+        // decomposed into components containing an even number of nodes
+        public static int evenForest(int t_nodes, int t_edges, List<int> t_from, List<int> t_to)
+        {
+            var arbitraryEntryNode = t_from.First();
+            var visited = new HashSet<int> { arbitraryEntryNode };
+            var adjList = new AdjacencyList<int, int>();
+
+            for (int i = 0; i < t_from.Count; i++)
+            {
+                adjList.Add(t_from[i], t_to[i]);
+                adjList.Add(t_to[i], t_from[i]);
+            }
+
+            dfsEvenForest(
+                arbitraryEntryNode, 
+                adjList, 
+                visited, 
+                out var subForestCount);
+
+            return subForestCount;
+        }
+
+        private static int dfsEvenForest(
+            int current,
+            AdjacencyList<int, int> adjList, 
+            HashSet<int> visited,
+            out int subForestCount) 
+        {
+            var weight = 0;
+            var neighbours = adjList.GetNeighbours(current);
+
+            subForestCount = 0;
+
+            foreach (var neighbour in neighbours!.Where(n => !visited.Contains(n)))
+            {
+                visited.Add(neighbour);
+
+                var neighbourWeight = dfsEvenForest(
+                    neighbour, 
+                    adjList, 
+                    visited, 
+                    out var sub);
+
+                subForestCount += sub;
+                weight += neighbourWeight;
+
+                if (neighbourWeight % 2 == 0)
+                {
+                    subForestCount++;
+                }
+            }
+
+            return weight + 1;
+        }
+
+        private class AdjacencyList<TKey, TValue> where TKey : notnull
+        {
+            private readonly Dictionary<TKey, HashSet<TValue>> dict;
+
+            public AdjacencyList()
+            {
+                dict = new();
+            }
+
+            public AdjacencyList(int capacity)
+            {
+                dict = new(capacity);
+            }
+
+            public bool Add(TKey key)
+            {
+                if (dict.ContainsKey(key))
+                {
+                    return false;
+                }
+
+                dict.Add(key, new());
+
+                return true;
+            }
+
+            public bool Add(TKey key, TValue value)
+            {
+                if (dict.TryGetValue(key, out var set))
+                {
+                    return set.Add(value);
+                }
+
+                dict.Add(key, new() { value });
+
+                return true;
+            }
+
+            public IReadOnlySet<TValue> GetNeighbours(TKey key)
+            {
+                return dict[key];
+            }
+
+            public bool TryGetNeighbours(TKey key, out IReadOnlySet<TValue>? neighbours) 
+            {
+                if (dict.TryGetValue(key, out var value))
+                {
+                    neighbours = value;
+                    return true;
+                }
+
+                neighbours = default;
+                return false;
+            }
         }
     }
 }
