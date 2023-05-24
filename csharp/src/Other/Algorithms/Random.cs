@@ -930,5 +930,192 @@ namespace Other.Algorithms
             // then strArr contains multiple trees and is not proper
             return potentialRootNodes.Count == 1 ? "true" : "false";
         }
+
+        // https://leetcode.com/problems/generate-parentheses
+        public static List<string> GenerateParenthesis(int n) 
+        {
+            var len = n * 2;
+            var results = new List<string>();
+            var q = new Queue<QItem>();
+
+            q.Enqueue(new QItem("(", 1, 0));
+
+            while (q.TryDequeue(out var current))
+            {
+                if (current.Value.Length == len && 
+                    current.OpenCount == current.ClosedCount)
+                {
+                    results.Add(current.Value);
+                }
+                else if (current.Value.Length < len)
+                {
+                    q.Enqueue(current with { Value = $"{current.Value}(", OpenCount = current.OpenCount + 1 });
+
+                    if (current.OpenCount > current.ClosedCount)
+                    {
+                        q.Enqueue(current with { Value = $"{current.Value})", ClosedCount = current.ClosedCount + 1 });
+                    }
+                }
+            }
+
+            return results;
+        }
+
+        private record QItem(
+            string Value, 
+            int OpenCount, 
+            int ClosedCount);
+
+        // https://leetcode.com/problems/zigzag-conversion
+        public static string ZigZag(string s, int numRows) 
+        {
+            // CODINGCHALLENGESAREFUN = 22
+            // CCNEOGHEGRFDNALEAUILSN
+            // 4
+
+            /*
+                C     C     N     E
+                O   G H   E G   R F   S
+                D N   A L   E A   U S
+                I     L     S     N
+
+
+                C   N   A   N   A   U
+                O I G H L E G S R F N
+                D   C   L   E   E
+
+                CNANAUOIGHLEGSRFNDCLEE
+
+                CDNCALNEAEU
+                OIGHLEGSRFN
+
+                CCNEOGHEGRFDNALEAUILSN
+            */
+
+            var diag = numRows <= 2 ? 0 : numRows - 2;
+            var blockLen = numRows + diag;
+            var remainder = s.Length % blockLen;
+            var numCols =
+                (s.Length / blockLen * (diag + 1)) + 
+                (remainder > 0 ? Math.Max(remainder - numRows, 0) + 1: 0);
+
+            var matrix = new string[numRows, numCols];
+
+            var idx = 0;
+            var col = 0;
+            var diag_r = Math.Max(numRows - 2, 0);
+            while (idx < s.Length)
+            {
+                for (var r = 0; r < numRows && idx < s.Length; r++)
+                {
+                    matrix[r, col] = s[idx++].ToString();
+                }
+
+                for (var r = diag_r; r > 0 && idx < s.Length; r--)
+                {
+                    matrix[r, ++col] = s[idx++].ToString();
+                }
+
+                col++;
+            }
+
+            var result = "";
+
+            foreach (var item in matrix)
+            {
+                result += item;
+            }
+
+            return result;
+        }
+
+        // https://leetcode.com/problems/top-k-frequent-elements/
+        public static int[] TopKFrequent(int[] nums, int k)
+        {
+            var result = new int[k];
+            var tail = default(FrequencyNode);
+            var head = new FrequencyNode { Value = nums[0], Frequency = 1 };
+            var nodeLookup = new Dictionary<int, FrequencyNode>() { { nums[0], head } };
+
+            foreach (var num in nums.Skip(1))
+            {
+                if (nodeLookup.TryGetValue(num, out var node))
+                {
+                    var newTailCandidate = node.Greater;
+
+                    node.Frequency++;
+                    node.Sort();
+                    head = node.Greater is null ? node : head;
+                    tail = 
+                        newTailCandidate is not null && 
+                        newTailCandidate.Less is null ? newTailCandidate : tail;
+                }
+                else
+                {
+                    var nextTail = new FrequencyNode { Value = num, Frequency = 1, Greater = tail ?? head };
+                    nextTail.Greater.Less = nextTail;       
+                    tail = nextTail;
+                    nodeLookup.Add(num, nextTail);
+                }
+            }
+
+            var current = head;
+            for (int i = 0; i < k && current is not null; i++)
+            {
+                result[i] = current.Value;
+                current = current.Less;
+            }
+
+            return result;
+        }
+
+        /*
+              4     8
+             /       \
+            2         10
+           / \
+          1   7
+              /
+             5
+              \
+               9
+        */
+        private sealed class FrequencyNode 
+        {
+            public int Value { get; set; }
+            public int Frequency { get; set; }
+            public FrequencyNode? Greater { get; set; }
+            public FrequencyNode? Less { get; set; }
+
+            public void Sort() 
+            {
+                if (Greater?.Frequency < Frequency)
+                {
+                    SwapUp(Greater);
+                    Sort();
+                }
+            }
+
+            private void SwapUp(FrequencyNode other)
+            {
+                var nextGreater = other.Greater;
+
+                if (other.Greater is not null)
+                {
+                    other.Greater.Less = this;
+                }
+
+                other.Greater = this;
+                other.Less = Less;
+
+                if (other.Less is not null)
+                {
+                    other.Less.Greater = other;
+                }
+                
+                Less = other;
+                Greater = nextGreater;
+            }
+        }
     }
 }
